@@ -3,8 +3,9 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Authenticated({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
+export default function Authenticated({ header, action, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -81,7 +82,10 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                    <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <span>{header}</span>
+                        <PrimaryButton onClick={action}>Edit</PrimaryButton>
+                    </div>
                 </header>
             )}
 

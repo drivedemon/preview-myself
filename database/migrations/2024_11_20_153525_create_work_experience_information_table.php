@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('work_experience_id');
             $table->string('description');
+            $table->string('image_path')->default(null);
             $table->timestamps();
 
             $table->foreign('work_experience_id')

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\PersonalInformation;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +12,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Sirakan',
+            'last_name' => 'Kaewgosa',
+            'nick_name' => 'Drive',
+            'job_position' => 'Developer',
+            'github_url' => 'https://www.github.com/drive',
+            'mobile_phone' => '0625490000',
+            'email' => 'drive@mail.com',
+            'description' => 'I am DRIVE!',
+        ]);
     }
 }
