@@ -26,3 +26,6 @@ Route::get('/education', [EducationController::class, 'index'])->name('education
 Route::get('/skill', [SkillController::class, 'index'])->name('skill');
 Route::get('/work-experience', [WorkExperienceController::class, 'index'])->name('work_experience');
 
+Route::post('/personal-information', [PersonalInformationController::class, 'store'])->name('personal_information.store');
+Route::post('/education', [EducationController::class, 'store'])->name('education.store');
+Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');

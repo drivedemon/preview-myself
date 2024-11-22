@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('education', function (Blueprint $table) {
             $table->id();
             $table->string('university_name');
-            $table->float('grade', 2);
-            $table->string('start_year');
-            $table->string('end_year');
+            $table->decimal('grade');
+            $table->year('start_year');
+            $table->year('end_year');
             $table->string('faculty_name');
             $table->string('major_name');
             $table->timestamps();

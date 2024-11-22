@@ -6,6 +6,7 @@ use App\Domain\PersonalInformation\PersonalInformationDTO;
 use App\Domain\PersonalInformation\PersonalInformationService;
 use App\Http\Requests\PersonalInformationUpdateRequest;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PersonalInformationController extends Controller
 {
@@ -16,25 +17,31 @@ class PersonalInformationController extends Controller
         $this->personalInformationService = $personalInformationService;
     }
 
-    public function index()
+    public function index(): Response
     {
-        $imagePath = asset('storage/dog-meme.jpg');
+        $personalInformation = $this->personalInformationService->get();
 
         return Inertia::render('PersonalInformation', [
-            'imageUrl' => $imagePath,
-            'personalInformation' => $this->personalInformationService->get(),
+            'imageUrl' => asset("storage/$personalInformation->image_path"),
+            'personalInformation' => $personalInformation,
         ]);
     }
 
-    public function update(PersonalInformationUpdateRequest $request)
+    public function store(PersonalInformationUpdateRequest $request): Response
     {
         $data = $request->validated();
-        $path = $request->file('image')->store('images', 'public');
-        $data['image_path'] = $path;
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $data['image_path'] = $path;
+        }
+
         $dto = new PersonalInformationDTO($data);
+        $personalInformation = $this->personalInformationService->updateById($data['id'], $dto);
 
         return Inertia::render('PersonalInformation', [
-            'personalInformation' => $this->personalInformationService->get(),
+            'imageUrl' => asset("storage/$personalInformation->image_path"),
+            'personalInformation' => $personalInformation,
         ]);
     }
 }

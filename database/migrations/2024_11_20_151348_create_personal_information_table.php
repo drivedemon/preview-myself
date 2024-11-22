@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('mobile_phone');
             $table->string('email');
             $table->string('description');
-            $table->string('image_path')->default(null);
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

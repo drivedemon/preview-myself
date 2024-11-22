@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonalInformation;
+use App\Domain\Education\EducationDTO;
+use App\Domain\Education\EducationService;
+use App\Http\Requests\EducationUpdateRequest;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EducationController extends Controller
 {
-    public function index()
+    private EducationService $educationService;
+
+    public function __construct(EducationService $educationService)
     {
-        $personalInformation = PersonalInformation::first();
+        $this->educationService = $educationService;
+    }
+
+    public function index(): Response
+    {
+        return Inertia::render('Education', [
+            'education' => $this->educationService->get(),
+        ]);
+    }
+
+    public function store(EducationUpdateRequest $request): Response
+    {
+        $data = $request->validated();
+
+        $dto = new EducationDTO($data);
+        $education = $this->educationService->updateById($data['id'], $dto);
 
         return Inertia::render('Education', [
-            'personalInformation' => $personalInformation,
-            'phpVersion' => PHP_VERSION,
+            'education' => $education,
         ]);
     }
 }

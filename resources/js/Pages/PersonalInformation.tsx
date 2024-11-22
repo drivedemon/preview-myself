@@ -8,19 +8,18 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
   personalInformation: IPersonalInformation,
   imageUrl: string
 }>) {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(imageUrl);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const handleEdit = () => {
-    setIsEdit(!isEdit)
-  }
+    setIsEdit(!isEdit);
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setData('image', file);
 
-      // Generate a preview URL for the new image
       const reader = new FileReader();
       reader.onload = () => {
         setPreviewImage(reader.result as string);
@@ -30,6 +29,7 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
   };
 
   const {data, setData, post, processing, errors} = useForm({
+    id: personalInformation.id || '',
     first_name: personalInformation.first_name || '',
     last_name: personalInformation.last_name || '',
     nick_name: personalInformation.nick_name || '',
@@ -43,14 +43,22 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('personal-information.update'), {
+
+    post(route('education.store'), {
       preserveScroll: true,
+      forceFormData: true,
+      onSuccess: () => {
+        setIsEdit(!isEdit);
+      },
     });
   };
 
   return (
     <DefaultLayout
-      action={handleEdit}
+      editing={isEdit}
+      editAction={handleEdit}
+      processing={processing}
+      submitAction={handleSubmit}
       header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Personal Information</h2>}
     >
       <Head title="Personal Information" />
@@ -62,13 +70,15 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
               <div className="lg:col-span-3 flex flex-col items-center gap-3 relative group">
                 <img
                   src={previewImage || imageUrl}
+                  loading="lazy"
                   alt="Profile"
-                  className="w-60 h-60 object-cover rounded-full"
+                  className="w-60 h-60 object-cover rounded-full bg-gray-200"
                 />
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
+                  disabled={!isEdit}
                   className="absolute mx-auto inset-0 opacity-0 w-60 h-60 rounded-full items-center cursor-pointer"
                 />
                 {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
@@ -146,8 +156,8 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
                     }
                   </div>
                 </div>
-                <div className="grid grid-cols-12 space-x-4">
-                  <div className="col-span-4 flex flex-col gap-3">
+                <div className="grid grid-cols-12 space-y-4 lg:space-y-0 lg:space-x-4">
+                  <div className="col-span-12 lg:col-span-6 flex flex-col gap-3">
                     <label htmlFor="job_position" className="font-semibold text-lg">Job Position</label>
                     {
                       isEdit ?
@@ -160,7 +170,7 @@ export default function PersonalInformation({personalInformation, imageUrl}: Pag
                         : <span>{data.job_position}</span>
                     }
                   </div>
-                  <div className="col-span-8 flex flex-col gap-3">
+                  <div className="col-span-12 lg:col-span-6 flex flex-col gap-3">
                     <label htmlFor="github_url" className="font-semibold text-lg">Github</label>
                     {
                       isEdit ?

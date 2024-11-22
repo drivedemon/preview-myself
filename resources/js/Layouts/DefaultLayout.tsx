@@ -5,7 +5,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Authenticated({ header, action, children }: PropsWithChildren<{ header?: ReactNode }>) {
+export default function Authenticated({ header, editing, editAction, processing, submitAction, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -82,9 +82,18 @@ export default function Authenticated({ header, action, children }: PropsWithChi
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         <span>{header}</span>
-                        <PrimaryButton onClick={action}>Edit</PrimaryButton>
+                        <div className="flex gap-x-4">
+                          <PrimaryButton disabled={processing} onClick={editAction}>
+                            {editing ? 'Cancel' : 'Edit'}
+                          </PrimaryButton>
+                          {editing && (
+                            <PrimaryButton onClick={submitAction} disabled={processing} className="bg-green-700 hover:bg-green-600">
+                              {processing ? 'Saving...' : 'Save'}
+                            </PrimaryButton>
+                          )}
+                        </div>
                     </div>
                 </header>
             )}

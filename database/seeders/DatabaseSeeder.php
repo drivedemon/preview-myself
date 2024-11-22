@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Education;
 use App\Models\PersonalInformation;
 use Illuminate\Database\Seeder;
 
@@ -21,6 +22,15 @@ class DatabaseSeeder extends Seeder
             'mobile_phone' => '0625490000',
             'email' => 'drive@mail.com',
             'description' => 'I am DRIVE!',
+        ]);
+
+        Education::factory()->create([
+            'university_name' => 'Rattanabundit University',
+            'grade' => 3.11,
+            'start_year' => 2013,
+            'end_year' => 2017,
+            'faculty_name' => 'Science and Technology',
+            'major_name' => 'Information Technology',
         ]);
     }
 }

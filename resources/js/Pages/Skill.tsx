@@ -1,14 +1,32 @@
-import {Link, Head} from '@inertiajs/react';
-import {PageProps} from '@/types';
+import {Link, Head, useForm} from '@inertiajs/react';
+import {ISkill, PageProps} from '@/types';
 import DefaultLayout from "@/Layouts/DefaultLayout";
-import {useState} from "react";
+import React, {useState} from "react";
 
-export default function Skill({phpVersion}: PageProps<{phpVersion: string}>) {
+export default function Skill({skills}: PageProps<{skills: ISkill}>) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  console.log(skills)
+  const handleEdit = () => {
+    setIsEdit(!isEdit);
+  };
 
-  const editAction = () => {
-    setIsEdit(!isEdit)
-  }
+  const {data, setData, post, processing, errors} = useForm(
+    skills.map((skill: ISkill) => ({
+      id: skill.id || '',
+      title: skill.title || '',
+    })));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    post(route('education.store'), {
+      preserveScroll: true,
+      forceFormData: true,
+      onSuccess: () => {
+        setIsEdit(!isEdit);
+      },
+    });
+  };
 
   return (
     <DefaultLayout
