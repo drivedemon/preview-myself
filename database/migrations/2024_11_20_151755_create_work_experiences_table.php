@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('company_name');
             $table->string('job_position');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('project_name');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->text('description');
             $table->timestamps();
         });
     }

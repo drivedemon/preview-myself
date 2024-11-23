@@ -2,7 +2,7 @@
 
 namespace App\Domain\Skill;
 
-use App\Models\Skill;
+use Illuminate\Database\Eloquent\Collection;
 
 class SkillService
 {
@@ -13,13 +13,19 @@ class SkillService
         $this->skillRepository = $skillRepository;
     }
 
-    public function get(): Skill
+    public function get(): Collection
     {
-        return $this->skillRepository->firstOrFail();
+        return $this->skillRepository->get();
     }
 
-    public function updateById(int $id, SkillDTO $dto): Skill
+    public function update(array $data): void
     {
-        return $this->skillRepository->updateById($id, $dto);
+        foreach ($data as $skillData) {
+            $skill = $this->skillRepository->updateById($skillData['id'], $skillData);
+
+            foreach ($skillData['skill_details'] as $skillDetailData) {
+                $skill->skillDetails()->where('skill_id', $skillDetailData['id'])->update($skillDetailData);
+            }
+        }
     }
 }

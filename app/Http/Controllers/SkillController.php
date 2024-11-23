@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Skill\SkillService;
+use App\Http\Requests\SkillUpdateRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,21 +18,19 @@ class SkillController extends Controller
     }
 
     public function index(): Response
-    {dd($this->skillService->get());
+    {
         return Inertia::render('Skill', [
-            'skill' => $this->skillService->get(),
+            'skills' => $this->skillService->get(),
         ]);
     }
 
-    public function store(Request $request): Response
+    public function store(SkillUpdateRequest $request): Response
     {
         $data = $request->validated();
-
-//        $dto = new SkillDTO($data);
-//        $skill = $this->skillService->updateById($data['id'], $dto);
+        $this->skillService->update($data['data']);
 
         return Inertia::render('Skill', [
-            'skill' => '$skill',
+            'skills' => $this->skillService->get(),
         ]);
     }
 }

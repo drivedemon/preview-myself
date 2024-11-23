@@ -30,14 +30,24 @@ export interface IEducation {
 export interface ISkill {
     id: number;
     title: string;
-    skill_information: ISkillInformation[] | [];
+    skill_details: ISkillDetail[] | [];
 }
 
-export interface ISkillInformation {
+export interface ISkillDetail {
     id: number;
     skill_id: number;
     name: string;
-    level: number;
+    level: string;
+}
+
+export interface IWorkExperience {
+    id: number;
+    company_name: string;
+    job_position: string;
+    start_date: string;
+    end_date: string;
+    project_name: string;
+    description: string;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

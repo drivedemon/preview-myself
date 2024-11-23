@@ -12,11 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skill_information', function (Blueprint $table) {
+        Schema::create('skill_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('skill_id');
             $table->string('name');
-            $table->unsignedTinyInteger('level')->default(SkillInformationLevel::Basic->value);
+            $table->string('level');
             $table->timestamps();
 
             $table->foreign('skill_id')

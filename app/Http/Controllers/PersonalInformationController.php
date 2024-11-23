@@ -22,7 +22,7 @@ class PersonalInformationController extends Controller
         $personalInformation = $this->personalInformationService->get();
 
         return Inertia::render('PersonalInformation', [
-            'imageUrl' => asset("storage/$personalInformation->image_path"),
+            'imageUrl' => $personalInformation->image_path ? asset("storage/$personalInformation->image_path") : null,
             'personalInformation' => $personalInformation,
         ]);
     }
@@ -40,7 +40,7 @@ class PersonalInformationController extends Controller
         $personalInformation = $this->personalInformationService->updateById($data['id'], $dto);
 
         return Inertia::render('PersonalInformation', [
-            'imageUrl' => asset("storage/$personalInformation->image_path"),
+            'imageUrl' => $personalInformation->image_path ? asset("storage/$personalInformation->image_path") : null,
             'personalInformation' => $personalInformation,
         ]);
     }

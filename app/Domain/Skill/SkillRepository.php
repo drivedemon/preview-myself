@@ -3,6 +3,7 @@
 namespace App\Domain\Skill;
 
 use App\Models\Skill;
+use Illuminate\Database\Eloquent\Collection;
 
 class SkillRepository
 {
@@ -13,21 +14,20 @@ class SkillRepository
         $this->skill = $skill;
     }
 
-    public function firstOrFail(?int $id = null): Skill
+    public function get(): Collection
     {
-        $builder = $this->skill->query();
-
-        if ($id !== null) {
-            $builder->where('id', $id);
-        }
-
-        return $this->skill->firstOrFail();
+        return $this->skill->with(['skillDetails'])->get();
     }
 
-    public function updateById(string $id, SkillDTO $dto): Skill
+    public function findOrFail(int $id): Skill
     {
-        $skill = $this->firstOrFail($id);
-        $skill->update($dto->toArray());
+        return $this->skill->findOrFail($id);
+    }
+
+    public function updateById(int $id, array $data): Skill
+    {
+        $skill = $this->findOrFail($id);
+        $skill->update($data);
 
         return $skill;
     }

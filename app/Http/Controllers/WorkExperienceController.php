@@ -2,18 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonalInformation;
+use App\Domain\WorkExperience\WorkExperienceService;
+use App\Http\Requests\WorkExperienceUpdateRequest;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class WorkExperienceController extends Controller
 {
-    public function index()
+    private WorkExperienceService $workExperienceService;
+
+    public function __construct(WorkExperienceService $workExperienceService)
     {
-        $personalInformation = PersonalInformation::first();
+        $this->workExperienceService = $workExperienceService;
+    }
+
+    public function index(): Response
+    {
+        return Inertia::render('WorkExperience', [
+            'workExperiences' => $this->workExperienceService->get(),
+        ]);
+    }
+
+    public function store(WorkExperienceUpdateRequest $request): Response
+    {
+        $data = $request->validated();
+        $this->workExperienceService->update($data['data']);
 
         return Inertia::render('WorkExperience', [
-            'personalInformation' => $personalInformation,
-            'phpVersion' => PHP_VERSION,
+            'workExperiences' => $this->workExperienceService->get(),
         ]);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Enums\SkillInformationLevel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SkillInformation extends Model
+class SkillDetail extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,8 @@ class SkillInformation extends Model
         'level',
     ];
 
-    protected $casts = [
-        'level' => SkillInformationLevel::class,
-    ];
+    public function skill(): BelongsTo
+    {
+        return $this->belongsTo(Skill::class);
+    }
 }

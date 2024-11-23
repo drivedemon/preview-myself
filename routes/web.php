@@ -29,3 +29,4 @@ Route::get('/work-experience', [WorkExperienceController::class, 'index'])->name
 Route::post('/personal-information', [PersonalInformationController::class, 'store'])->name('personal_information.store');
 Route::post('/education', [EducationController::class, 'store'])->name('education.store');
 Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');
+Route::post('/work-experience', [WorkExperienceController::class, 'store'])->name('work_experience.store');
