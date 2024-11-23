@@ -13,7 +13,7 @@
 
 - PHP 8.1
 - MySQL 8
-- Node v18
+- Node v18.8
 
 ### Laragon web server
 link to download: https://laragon.org/download/
